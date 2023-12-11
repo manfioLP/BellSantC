@@ -1,8 +1,8 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import {Link, Tabs} from 'expo-router';
-import {Pressable, useColorScheme} from 'react-native';
+import { Tabs } from 'expo-router';
+import  { useColorScheme } from 'react-native';
 
-import Colors from '../../constants/Colors';
+import Colors from '../constants/Colors';
 
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
@@ -35,6 +35,13 @@ export default function TabLayout() {
         options={{
           title: 'Log Part',
           tabBarIcon: ({color}) => <TabBarIcon name='edit' color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="settings"
+        options={{
+          title: 'Settings',
+          tabBarIcon: ({color}) => <TabBarIcon name='info' color={color} />,
         }}
       />
     </Tabs>
