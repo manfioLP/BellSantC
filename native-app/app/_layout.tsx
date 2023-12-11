@@ -45,8 +45,6 @@ export default function RootLayout() {
 }
 
 const projectId = Constants.expoConfig.extra?.ProjectId || "";
-
-console.log("App root Layout");
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
 

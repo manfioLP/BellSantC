@@ -10,12 +10,11 @@ export default function SettingsScreen() {
 
 	const handleLogout = useCallback(() => {
 		logout().then((l) => {
-			console.log("logged out", l)
 			clearSession()
-				.then((c) => console.log("cleared session", c))
-				.catch((e) => console.log("error clearing session", e))
+				// .then((c) => console.log("cleared session", c))
+				// .catch((e) => console.log("error clearing session", e))
 		}).catch((e) => {
-			console.log("error logging out", e)
+			console.error("error logging out", e)
 		})
 	}, [logout])
 

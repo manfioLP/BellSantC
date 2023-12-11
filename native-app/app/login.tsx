@@ -13,7 +13,6 @@ export default function LoginScreen() {
     const startFlow = async () => {
         try {
             const resp = await flow.start('https://auth.descope.io/login/P2ZJqCUkHt7nQingZ8Ykg3Zvqtu5', '<URL_FOR_APP_LINK>')
-            console.log("flow response", resp)
             await manageSession(resp.data)
             router.replace("/")
         } catch (e) {
