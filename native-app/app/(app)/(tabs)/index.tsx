@@ -1,11 +1,11 @@
 import {Button, Platform, StyleSheet} from 'react-native';
-import {Text, View} from '../components/Themed';
+import {Text, View} from '../../../components/Themed';
 import {Link, useFocusEffect} from 'expo-router';
 import axios from 'axios';
-import {useMachineData} from '../app/useMachineData';
+import {useMachineData} from '../../useMachineData';
 import {useCallback, useState} from 'react';
-import {PartsOfMachine} from '../components/PartsOfMachine';
-import {MachineScore} from '../components/MachineScore';
+import {PartsOfMachine} from '../../../components/PartsOfMachine';
+import {MachineScore} from '../../../components/MachineScore';
 
 let apiUrl: string =
   'https://fancy-dolphin-65b07b.netlify.app/api/machine-health';
@@ -52,9 +52,9 @@ export default function StateScreen() {
     <View style={styles.container}>
       <View style={styles.separator} />
       {!machineData && (
-        <Link href='/native-app/(tabs)/two' style={styles.link}>
+        <Link href='/two' style={styles.link}>
           <Text style={styles.linkText}>
-            Please log a part to check machine health zzzzz
+            Please log a part to check machine health
           </Text>
         </Link>
       )}

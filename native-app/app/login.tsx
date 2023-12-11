@@ -3,7 +3,7 @@ import {Button, Platform, StyleSheet} from 'react-native';
 import { useFlow, useDescope, useSession } from '@descope/react-native-sdk'
 import { router } from 'expo-router';
 
-import { Text, View } from '../../components/Themed';
+import { Text, View } from '../components/Themed';
 
 export default function LoginScreen() {
 

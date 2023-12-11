@@ -1,11 +1,11 @@
-import {Text, View} from "../components/Themed";
-import {Button, Platform, SafeAreaView, StyleSheet} from "react-native";
+import {Text, View} from "../../../components/Themed";
+import {Button, Platform, SafeAreaView, StyleSheet, TextInput} from "react-native";
 import {StatusBar} from "expo-status-bar";
-import {useCallback} from "react";
+import React, {useCallback} from "react";
 import {useDescope, useSession} from "@descope/react-native-sdk";
 
 export default function SettingsScreen() {
-	const { clearSession } = useSession()
+	const { session, clearSession } = useSession()
 	const { logout } = useDescope()
 
 	const handleLogout = useCallback(() => {
@@ -21,18 +21,30 @@ export default function SettingsScreen() {
 
 	return (
 		<View style={styles.container}>
-			<Text style={styles.title}>Settings</Text>
 			<View
 				style={styles.separator}
 				lightColor='#eee'
 				darkColor='rgba(255,255,255,0.1)'
 			/>
+			<Text style={styles.label}>Info</Text>
+			<TextInput
+				style={styles.input}
+				editable={false}
+				value={session.user?.email || "N/A"}
+				placeholder="User Email"
+				keyboardType="email-address"
+			/>
+			<TextInput
+				style={styles.input}
+				editable={false}
+				value={session.user?.name || "N/A"}
+				placeholder="User Name"
+			/>
+
 			<SafeAreaView style={styles.container}>
 				<Button title="Logout" onPress={handleLogout} />
 			</SafeAreaView>
 
-			{/* Use a light status bar on iOS to account for the black space above the modal */}
-			<StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
 		</View>
 	);
 }
@@ -50,6 +62,17 @@ const styles = StyleSheet.create({
 	separator: {
 		marginVertical: 30,
 		height: 1,
+		width: '80%',
+	},
+	label: {
+		fontSize: 18,
+		marginBottom: 10,
+	},
+	input: {
+		height: 40,
+		margin: 12,
+		borderWidth: 1,
+		padding: 10,
 		width: '80%',
 	},
 });
