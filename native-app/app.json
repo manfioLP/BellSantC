@@ -32,6 +32,9 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "ProjectId": "P2ZJqCUkHt7nQingZ8Ykg3Zvqtu5"
     }
   }
 }
