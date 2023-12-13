@@ -12,10 +12,10 @@ dotenv.config();
 app.use(express.json());
 
 // Endpoint to get machine health score
-app.post('/machine-health', (req: Request, res: Response) => {
-  const result = getMachineHealth(req);
+app.post('/machine-health', async (req: Request, res: Response) => {
+  const result = await getMachineHealth(req);
   if (result.error) {
-    res.status(400).json(result);
+    res.status(result.status || 400).json(result.error);
   } else {
     res.json(result);
   }
