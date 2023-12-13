@@ -6,6 +6,7 @@ import {useMachineData} from '../../useMachineData';
 import {useCallback, useState} from 'react';
 import {PartsOfMachine} from '../../../components/PartsOfMachine';
 import {MachineScore} from '../../../components/MachineScore';
+import {useSession} from "@descope/react-native-sdk";
 
 let apiUrl: string =
   'https://fancy-dolphin-65b07b.netlify.app/api/machine-health';
@@ -17,8 +18,10 @@ if (__DEV__) {
 }
 
 export default function StateScreen() {
+  const { session } = useSession();
   const {machineData, resetMachineData, loadMachineData, setScores} =
     useMachineData();
+
 
   //Doing this because we're not using central state like redux
   useFocusEffect(
@@ -29,9 +32,10 @@ export default function StateScreen() {
 
   const calculateHealth = useCallback(async () => {
     try {
+      const headers = { Authorization: `Bearer ${session?.sessionJwt}` };
       const response = await axios.post(apiUrl, {
         machines: machineData?.machines,
-      });
+      }, { headers });
 
       if (response.data?.factory) {
         setScores(response.data);
@@ -46,7 +50,7 @@ export default function StateScreen() {
         }`,
       );
     }
-  }, [machineData]);
+  }, [machineData, session]);
 
   return (
     <View style={styles.container}>

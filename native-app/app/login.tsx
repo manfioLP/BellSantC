@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import {Button, Platform, StyleSheet} from 'react-native';
+import { Button, Platform, StyleSheet, Image } from 'react-native';
 import { useFlow, useDescope, useSession } from '@descope/react-native-sdk'
 import { router } from 'expo-router';
 
@@ -22,6 +22,7 @@ export default function LoginScreen() {
 
     return (
         <View style={styles.container}>
+            <Image source={require("../assets/images/square-logo.png")} style={styles.logo}/>
             <Text style={styles.title}>Welcome</Text>
             <Button title={'Login'} onPress={startFlow} />
             <View
@@ -50,5 +51,11 @@ const styles = StyleSheet.create({
         marginVertical: 30,
         height: 1,
         width: '80%',
+    },
+    logo: {
+        width: 100,
+        height: 100,
+        resizeMode: 'contain',
+        marginBottom: 20,
     },
 });
