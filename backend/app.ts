@@ -1,8 +1,12 @@
 import express, {Request, Response} from 'express';
+import dotenv from 'dotenv';
 import {getMachineHealth} from './machineHealth';
+import {connectDatabase} from "./database";
 
 const app = express();
 const port = 3001;
+
+dotenv.config();
 
 // Middleware to parse JSON request bodies
 app.use(express.json());
@@ -17,6 +21,8 @@ app.post('/machine-health', (req: Request, res: Response) => {
   }
 });
 
-app.listen(port, () => {
-  console.log(`API is listening at http://localhost:${port}`);
-});
+connectDatabase().then(() => {
+  app.listen(port, () => {
+    console.log(`API is listening at http://localhost:${port}`);
+  });
+})
