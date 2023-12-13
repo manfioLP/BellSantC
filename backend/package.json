@@ -12,6 +12,7 @@
   "keywords": [],
   "author": "BellSant",
   "dependencies": {
+    "@descope/node-sdk": "^1.6.1",
     "@netlify/functions": "^2.0.2",
     "dotenv": "^16.3.1",
     "express": "^4.17.1",
