@@ -24,6 +24,8 @@ Follow these steps to set up the BellSant Machine Health API:
    ```bash
    yarn
    ```
+   
+3. copy .env.example to an .env file on `/backend` root folder. Add to it a valid MONGO URI
 
 ## Usage
 
@@ -42,7 +44,7 @@ The API will be accessible at `http://localhost:3001` by default. You can change
 You can evaluate the health of a machine by sending a POST request to the `/machine-health` endpoint. Here's an example using cURL:
 
 ```bash
-curl -X POST -H "Content-Type: application/json" -d '{
+curl -X POST -H "Content-Type: application/json" -H "Authorization: <AUTH_TOKEN_HERE>" -d '{
   "machines": {
     "weldingRobot": {
       "errorRate": "0.5",
@@ -54,9 +56,57 @@ curl -X POST -H "Content-Type: application/json" -d '{
 
 The response will include the machine name and its health score.
 
+### Retrieving Machine Health History Data
+
+You can evaluate the health of a machine by sending a POST request to the `/machine-health` endpoint. Here's an example using cURL:
+
+```bash
+curl -X GET -H "Authorization: <AUTH_TOKEN_HERE>" -d http://localhost:3001/machine-history
+```
+
+The response will include all history data to be displayed in the frontend.
+
+example response:
+
+```json
+{
+   "data": [
+      {
+         "userId": "abcdefghjidjiodk134",
+         "timestamp": "2021-07-18T18:00:00.000Z",
+         "machines": {
+            "weldingRobot": "72.77",
+            "paintingRobot": "72.77"
+         },
+         "factoryScore": "xx.xx"
+      },
+      {
+         "userId": "abcdefghjidjiodk134",
+         "timestamp": "2021-07-18T18:00:00.000Z",
+         "machines": {
+            "weldingRobot": "72.77",
+            "paintingRobot": "78.77"
+         },
+         "factoryScore": "xx.xx"
+      },
+      {
+         "userId": "abcdefghjidjiodk134",
+         "timestamp": "2021-07-18T18:00:00.000Z",
+         "machines": {
+            "weldingRobot": "72.77",
+            "paintingRobot": "82.77",
+            "assemblyRobot": "88.77"
+         },
+         "factoryScore": "xx.xx"
+      }
+   ]
+}
+```
+
 ### API Endpoints
 
 - `POST /machine-health`: Calculate the health of a machine based on provided data.
+- `GET /machine-history`: Retrieves the historical data of measurements for an authenticated user.
 
 ## Testing
 
