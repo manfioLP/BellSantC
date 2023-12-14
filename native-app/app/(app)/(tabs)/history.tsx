@@ -1,10 +1,11 @@
 import {Text, View} from "../../../components/Themed";
 import {Platform, ScrollView, StyleSheet, TextInput} from "react-native";
 import React, {useCallback, useEffect} from "react";
-import {useSession} from "@descope/react-native-sdk";
+// import {useSession} from "@descope/react-native-sdk";
 import {formatDate} from "../../../utils";
 import axios from "axios";
 import {useMachineData} from "../../useMachineData";
+import {useSessionData} from "../../useSessionData";
 
 let apiUrl: string =
 	'https://fancy-dolphin-65b07b.netlify.app/api/machine-history';
@@ -16,16 +17,20 @@ if (__DEV__) {
 }
 
 export default function HistoryScreen() {
-	const { session  } = useSession()
+	// const { session  } = useSession()
+	const { sessionData  } = useSessionData()
 	const { historyData, setHistory } = useMachineData();
 
 	useEffect(() => {
 		getHistory();
-	}, [])
+	}, [sessionData])
 
 	const getHistory = useCallback(async () => {
 		try {
-			const headers = { Authorization: `Bearer ${session?.sessionJwt}` };
+			if (!sessionData) {
+				return;
+			}
+			const headers = { Authorization: `Bearer ${sessionData?.sessionJwt}` };
 			const response = await axios.get(apiUrl, { headers });
 
 			if (response.data.history.length > 0) {
@@ -35,7 +40,7 @@ export default function HistoryScreen() {
 			console.error(error);
 			console.log("There was an error retrieving history.", error);
 		}
-	}, [session]);
+	}, [sessionData]);
 
 	return (
 		<View style={styles.container}>

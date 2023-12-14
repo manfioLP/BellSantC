@@ -1,10 +1,24 @@
 import {useSession} from "@descope/react-native-sdk";
-import {Redirect, Stack} from "expo-router";
+import {Redirect, Stack, useFocusEffect} from "expo-router";
+import {useSessionData} from "../useSessionData";
+import {useEffect, useState} from "react";
 
 export default function AppLayout() {
 	const { session } = useSession()
+	const { sessionData, loadSessionData } = useSessionData()
+	const [isLoading, setIsLoading] = useState(true)
 
-	if (!session) {
+	useEffect(() => {
+		loadSessionData().then(() => {
+			setIsLoading(false)
+		})
+	}, [])
+
+	if (isLoading) {
+		return null
+	}
+
+	if (!session && !sessionData) {
 		return <Redirect href={"/login"}/>
 	}
 

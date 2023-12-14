@@ -1,19 +1,22 @@
 import {Text, View} from "../../../components/Themed";
 import {Button, Platform, SafeAreaView, StyleSheet, TextInput} from "react-native";
-import {StatusBar} from "expo-status-bar";
 import React, {useCallback} from "react";
 import {useDescope, useSession} from "@descope/react-native-sdk";
+import {useSessionData} from "../../useSessionData";
+import {Redirect} from "expo-router";
 
 export default function SettingsScreen() {
+	const [loggedOut, setLoggedOut] = React.useState(false)
 	const { session, clearSession } = useSession()
+	const { sessionData, clearSessionData } = useSessionData()
 	const { logout } = useDescope()
 
 	const handleLogout = useCallback(() => {
 		logout().then((l) => {
 			console.log("clearing session...")
 			clearSession()
-				// .then((c) => console.log("cleared session", c))
-				// .catch((e) => console.log("error clearing session", e))
+			clearSessionData()
+			setLoggedOut(true)
 		}).catch((e) => {
 			console.error("error logging out", e)
 		})
@@ -30,14 +33,14 @@ export default function SettingsScreen() {
 			<TextInput
 				style={styles.input}
 				editable={false}
-				value={session.user?.email || "N/A"}
+				value={sessionData?.user?.email || "N/A"}
 				placeholder="User Email"
 				keyboardType="email-address"
 			/>
 			<TextInput
 				style={styles.input}
 				editable={false}
-				value={session.user?.name || "N/A"}
+				value={sessionData?.user?.name || "N/A"}
 				placeholder="User Name"
 			/>
 
@@ -45,6 +48,7 @@ export default function SettingsScreen() {
 				<Button title="Logout" onPress={handleLogout} />
 			</SafeAreaView>
 
+			{loggedOut && <Redirect href={"/login"}/>}
 		</View>
 	);
 }

@@ -4,15 +4,17 @@ import { useFlow, useSession } from '@descope/react-native-sdk'
 import { router } from 'expo-router';
 
 import { Text, View } from '../components/Themed';
+import { useSessionData } from "./useSessionData";
 
 export default function LoginScreen() {
-
     const flow = useFlow()
     const { manageSession } = useSession()
+    const { saveSession } = useSessionData()
     const startFlow = async () => {
         try {
             const resp = await flow.start('https://auth.descope.io/login/P2ZJqCUkHt7nQingZ8Ykg3Zvqtu5', '<URL_FOR_APP_LINK>')
             await manageSession(resp.data)
+            await saveSession(resp.data)
             router.replace("/")
         } catch (e) {
             // handle errors

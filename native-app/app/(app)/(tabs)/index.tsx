@@ -6,7 +6,8 @@ import {useMachineData} from '../../useMachineData';
 import {useCallback, useState} from 'react';
 import {PartsOfMachine} from '../../../components/PartsOfMachine';
 import {MachineScore} from '../../../components/MachineScore';
-import {useSession} from "@descope/react-native-sdk";
+// import {useSession} from "@descope/react-native-sdk";
+import {useSessionData} from "../../useSessionData";
 
 let apiUrl: string =
   'https://fancy-dolphin-65b07b.netlify.app/api/machine-health';
@@ -18,7 +19,8 @@ if (__DEV__) {
 }
 
 export default function StateScreen() {
-  const { session } = useSession();
+  // const { session } = useSession();
+  const { sessionData } = useSessionData();
   const {machineData, resetMachineData, loadMachineData, setScores} =
     useMachineData();
 
@@ -32,7 +34,10 @@ export default function StateScreen() {
 
   const calculateHealth = useCallback(async () => {
     try {
-      const headers = { Authorization: `Bearer ${session?.sessionJwt}` };
+      if (!sessionData) {
+        return;
+      }
+      const headers = { Authorization: `Bearer ${sessionData?.sessionJwt}` };
       const response = await axios.post(apiUrl, {
         machines: machineData?.machines,
       }, { headers });
@@ -50,7 +55,7 @@ export default function StateScreen() {
         }`,
       );
     }
-  }, [machineData, session]);
+  }, [machineData, sessionData]);
 
   return (
     <View style={styles.container}>
