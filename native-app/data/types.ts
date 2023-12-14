@@ -1,3 +1,12 @@
+export type MachineHealthLog = {
+  userId: string;
+  timestamp: number;
+  factoryScore: number;
+  machineScores: {
+    [key in MachineType]?: string;
+  };
+};
+
 export enum MachineType {
   WeldingRobot = 'weldingRobot',
   PaintingStation = 'paintingStation',

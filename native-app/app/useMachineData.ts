@@ -1,12 +1,15 @@
 import {useState, useEffect, useMemo, useCallback} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {MachineHealthLog} from "~data/types";
 
 export const useMachineData = () => {
   const [machineData, setMachineData] = useState(undefined);
+  const [historyData, setHistoryData] = useState<MachineHealthLog[]>(undefined);
 
   useEffect(() => {
     // Load machine data from local storage when the hook initializes
     loadMachineData();
+    loadHistoryData();
   }, []);
 
   const loadMachineData = useCallback(async () => {
@@ -25,6 +28,20 @@ export const useMachineData = () => {
       // Handle storage loading error
     }
   }, []);
+
+  const loadHistoryData = useCallback(async () => {
+    try {
+      const stored = await AsyncStorage.getItem('historyData');
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        setHistoryData(parsed);
+      } else {
+        setHistoryData(undefined);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }, [])
 
   const resetMachineData = useCallback(async () => {
     try {
@@ -78,11 +95,17 @@ export const useMachineData = () => {
     [machineData],
   );
 
+  const setHistory = useCallback(async (newHistory) => {
+    setHistoryData(newHistory);
+  }, [])
+
   return {
     machineData,
+    historyData,
     updateMachineData,
     resetMachineData,
     loadMachineData,
     setScores,
+    setHistory,
   };
 };
