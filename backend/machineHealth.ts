@@ -8,23 +8,10 @@ import {
   partInfo,
 } from '../native-app/data/types';
 import { calculateMachineHealth } from './calculations';
-import {validateToken} from "./auth";
 import { MachineHealthModel } from "./models";
 
 export const getMachineHealth = async (req: Request) => {
 
-  // validate auth header token
-  const { authorization } = req.headers;
-  if (!authorization) {
-    return {error: 'Missing authorization header'};
-  }
-
-  const authInfo = await validateToken(authorization.replace('Bearer ', ''));
-
-  if ("error" in authInfo) {
-    console.error("Invalid auth token")
-    return { error: "Invalid auth token", status: authInfo.status || 400 };
-  }
   /* Assuming the request body contains the machine's name and parts data in the format of
   {
     "machines": {
@@ -100,7 +87,7 @@ export const getMachineHealth = async (req: Request) => {
 
   try {
     const newMachineHealth = new MachineHealthModel({
-      userId: authInfo.token.sub,
+      userId: req.userId,
       factoryScore,
       machineScores,
     })

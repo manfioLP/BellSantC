@@ -1,7 +1,9 @@
 import express, {Request, Response} from 'express';
 import dotenv from 'dotenv';
 import {getMachineHealth} from './machineHealth';
+import {getHistoryData} from './historyData';
 import {connectDatabase} from "./database";
+import authenticate from "./middleware/auth";
 
 const app = express();
 const port = 3001;
@@ -12,7 +14,7 @@ dotenv.config();
 app.use(express.json());
 
 // Endpoint to get machine health score
-app.post('/machine-health', async (req: Request, res: Response) => {
+app.post('/machine-health', authenticate, async (req: Request, res: Response) => {
   const result = await getMachineHealth(req);
   if (result.error) {
     res.status(result.status || 400).json(result.error);
@@ -20,6 +22,15 @@ app.post('/machine-health', async (req: Request, res: Response) => {
     res.json(result);
   }
 });
+
+app.get('/machine-history', authenticate, async (req: Request, res: Response) => {
+  const result = await getHistoryData(req);
+  if (result.error) {
+    res.status(result.status || 400).json(result.error);
+  } else {
+    res.json(result);
+  }
+})
 
 connectDatabase().then(() => {
   app.listen(port, () => {
