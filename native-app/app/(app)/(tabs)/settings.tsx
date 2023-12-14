@@ -17,7 +17,7 @@ export default function SettingsScreen() {
 		}).catch((e) => {
 			console.error("error logging out", e)
 		})
-	}, [logout])
+	}, [])
 
 	return (
 		<View style={styles.container}>

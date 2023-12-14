@@ -39,7 +39,6 @@ export const getMachineHealth = async (req: Request) => {
       >
     >;
   } = req.body;
-  console.log("req body", req.body)
 
   if (!machines) {
     return {error: 'Invalid input format'};
